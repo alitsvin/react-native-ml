@@ -5,7 +5,15 @@ Installed WAtchman from here: https://facebook.github.io/watchman/docs/install.h
 
 inited an app via `react-native init`
 
+# how to run
+
+1. run `yarn start`
+2. run `yarn android`
+
 # Troubleshooting
 
 1. Unable to resolve module `./App` from file
-  S: `react-native start --reset-cache
+  S: `react-native start --reset-cache`
+
+2. Blank screen
+  S: Try to reverse the order of starting yarn scripts
