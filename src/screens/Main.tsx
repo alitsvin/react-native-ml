@@ -19,7 +19,7 @@ const Main = (props: any): any => {
   return (
     <View>
       { loading
-        ? <ActivityIndicator animating={loading}/>
+        ? <ActivityIndicator animating={loading} size="large" />
         : <Text>{'Main'}</Text>
       }
     </View>
