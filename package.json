@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.2",
     "@tensorflow/tfjs": "^1.2.11",
     "@tensorflow/tfjs-react-native": "0.1.0-alpha.2",
     "@types/react-test-renderer": "^16.9.0",

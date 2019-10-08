@@ -6,15 +6,26 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-react-native';
 
 const Main = (props: any): any => {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 3000);
+  // useEffect(() => {
+  //   setTimeout(() => setLoading(false), 3000);
+  // }, []);
+
+  useEffect(async () => {
+    try {
+      await tf.ready();
+      setLoading(false);
+    } catch (e) {
+      console.warn('tfjs is not ready!', e);
+    }
   }, []);
   
-  const text = 'Hello World!';
+  const text = 'Ready!';
 
   return (
     <View>
