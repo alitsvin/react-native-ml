@@ -14,13 +14,13 @@ const Main = (props: any): any => {
     setTimeout(() => setLoading(false), 3000);
   }, []);
   
-  const text = 'Main';
+  const text = 'Hello World!';
 
   return (
     <View>
       { loading
         ? <ActivityIndicator animating={loading} size="large" />
-        : <Text>{'Main'}</Text>
+        : <Text>{text}</Text>
       }
     </View>
   )

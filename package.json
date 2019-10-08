@@ -10,6 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^1.2.11",
+    "@tensorflow/tfjs-react-native": "0.1.0-alpha.2",
     "@types/react-test-renderer": "^16.9.0",
     "expo-gl": "^7.0.0",
     "expo-gl-cpp": "^7.0.0",
