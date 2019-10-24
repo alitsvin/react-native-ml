@@ -8,21 +8,22 @@ import {
 } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
+import * as mobilenet from '@tensorflow-models/mobilenet';
 
-const Main = (props: any): any => {
+const Main = (props: any): React.JSXElement => {
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   setTimeout(() => setLoading(false), 3000);
-  // }, []);
-
-  useEffect(async () => {
+  const load = async () => {
     try {
       await tf.ready();
-      setLoading(false);
+      setTimeout(() => setLoading(false), 3000);
     } catch (e) {
       console.warn('tfjs is not ready!', e);
     }
+  }
+
+  useEffect(() => {
+    load();
   }, []);
   
   const text = 'Ready!';
