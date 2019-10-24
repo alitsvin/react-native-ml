@@ -14,7 +14,12 @@ import * as mobilenet from '@tensorflow-models/mobilenet';
 const Main = (props: any): React.JSXElement => {
   const [loading, setLoading] = useState(true);
   const [cameraPermissionGranted, setCameraPermission] = useState(false);
+  const [predictions, setPredictions] = useState(null);
+
+  // next step: connect camera or gallery
+  
   const modelRef = useRef();
+  const image = useRef();
 
   const load = async () => {
     try {
