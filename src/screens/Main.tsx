@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,11 +12,12 @@ import * as mobilenet from '@tensorflow-models/mobilenet';
 
 const Main = (props: any): React.JSXElement => {
   const [loading, setLoading] = useState(true);
+  const modelRef = useRef();
 
   const load = async () => {
     try {
       await tf.ready();
-      setTimeout(() => setLoading(false), 3000);
+      modelRef.current = await mobilenet.load();
     } catch (e) {
       console.warn('tfjs is not ready!', e);
     }
@@ -26,7 +27,7 @@ const Main = (props: any): React.JSXElement => {
     load();
   }, []);
   
-  const text = 'Ready!';
+  const text = 'TF and model are Ready!';
 
   return (
     <View>
