@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
+  TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
   PermissionsAndroid
@@ -55,13 +56,20 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
     }
   }
 
+  const takePicture = async function(camera: any) {
+    const options = { quality: 0.5, base64: true };
+    const data = await camera.takePictureAsync(options);
+    //  eslint-disable-next-line
+    console.warn(data.uri);
+  };
+
   useEffect(function instantiate () {
     load();
     requestCameraPermissions();
   }, []);
   
   return (
-    <View>
+    <View style={styles.main}>
       { loading
         ? <ActivityIndicator animating={loading} size="large" />
         : <Text>{'TF and model are Ready!'}</Text>
@@ -76,7 +84,7 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
           // }}
           style={styles.preview}
           type={RNCamera.Constants.Type.back}
-          flashMode={RNCamera.Constants.FlashMode.on}
+          flashMode={RNCamera.Constants.FlashMode.off}
           androidCameraPermissionOptions={{
             title: 'Permission to use camera',
             message: 'We need your permission to use your camera',
@@ -93,18 +101,53 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
             console.log(barcodes);
           }}
           captureAudio={false}
-        />
+        >
+          {({ camera, status, recordAudioPermissionStatus }) => {
+            if (status !== 'READY') return <PendingView />;
+            return (
+              <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
+                <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
+                  <Text style={{ fontSize: 14 }}>   </Text>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        </RNCamera>
     </View>
   )
 }
+
+const PendingView = () => (
+  <View
+    style={{
+      flex: 1,
+      backgroundColor: 'lightgreen',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+  >
+    <Text>Waiting</Text>
+  </View>
+);
 
 export default Main;
 
 const styles = StyleSheet.create({
   main: {
-    display: 'flex'
+    flex: 1
   },
   preview: {
-
-  }
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 50,
+    padding: 15,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    margin: 20,
+  },
 });
