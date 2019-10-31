@@ -1,5 +1,6 @@
 import * as jpeg from 'jpeg-js';
 import * as tf from '@tensorflow/tfjs';
+import { fetch as tfjsFetch } from '@tensorflow/tfjs-react-native';
 import { Image } from 'react-native';
 
 export function imageToTensor (rawImageData: any): any {
@@ -21,17 +22,20 @@ export function imageToTensor (rawImageData: any): any {
   return tf.tensor3d(buffer, [height, width, 3]);
 }
 
-export async function classifyImage (model: any, image: any, cb: Function) {
+export async function classifyImage (model: any, image: any){
   try {
-    const imageAssetPath = Image.resolveAssetSource(image)
-    const response = await tf.fetch(imageAssetPath.uri, {}, { isBinary: true })
-    const rawImageData = await response.arrayBuffer()
-    const imageTensor = imageToTensor(rawImageData)
-    const predictions = await model.classify(imageTensor)
-    cb(predictions);
-    console.warn(predictions)
+    const imageAssetPath = Image.resolveAssetSource(image);
+    const response = await tfjsFetch(imageAssetPath.uri, {}, { isBinary: true });
+    const rawImageData = await response.arrayBuffer();
+    const imageTensor = imageToTensor(rawImageData);
+    const predictions = await model.classify(imageTensor);
+    console.warn(predictions);
+
+    return predictions;
+    
   } catch (error) {
-    console.warn(error)
+    console.warn(error);
+    return null;
   }
 }
 
