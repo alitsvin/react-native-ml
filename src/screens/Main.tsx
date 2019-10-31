@@ -13,6 +13,8 @@ import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 
+import * as ImageService from '../services/ImageService';
+
 const Main = (props: any): React.FunctionComponentElement<any> => {
   const [loading, setLoading] = useState(true);
   const [cameraPermissionGranted, setCameraPermission] = useState(false);
@@ -61,6 +63,7 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
     const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
     console.warn(data.uri);
+    const predictions = await ImageService.classifyImage(modelRef.current, data);
   };
 
   useEffect(function instantiate () {
