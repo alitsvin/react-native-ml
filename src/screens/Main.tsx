@@ -85,7 +85,9 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
     ImagePicker.launchImageLibrary(options, async (response) => {
       // console.warn(response);
       // Same code as in above section!
-      const predictions = await ImageService.classifyImage(modelRef.current, response);
+      if (response) {
+        const predictions = await ImageService.classifyImage(modelRef.current, response);
+      }
     });
   };
 

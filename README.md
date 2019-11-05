@@ -17,3 +17,6 @@ inited an app via `react-native init`
 
 2. Blank screen
   S: Try to reverse the order of starting yarn scripts
+
+3. Keystore file not found for signing config 'debug'
+  S: Download from `https://raw.githubusercontent.com/facebook/react-native/master/template/android/app/debug.keystore`
