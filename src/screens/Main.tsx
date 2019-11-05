@@ -12,6 +12,7 @@ import { RNCamera } from 'react-native-camera';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import * as mobilenet from '@tensorflow-models/mobilenet';
+import ImagePicker from 'react-native-image-picker/src';
 
 import * as ImageService from '../services/ImageService';
 
@@ -48,6 +49,16 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
           buttonPositive: 'OK',
         }
       );
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'External storage',
+          message: 'App needs access to your gallery',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         setCameraPermission(true);
       } else {
@@ -59,11 +70,23 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
   }
 
   const takePicture = async function(camera: any) {
-    const options = { quality: 0.5, base64: true };
-    const data = await camera.takePictureAsync(options);
+    // const options = { quality: 0.5, base64: true };
+    // const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
-    console.warn(data.uri);
-    const predictions = await ImageService.classifyImage(modelRef.current, data);
+    // console.warn(data.uri);
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.launchImageLibrary(options, async (response) => {
+      // console.warn(response);
+      // Same code as in above section!
+      const predictions = await ImageService.classifyImage(modelRef.current, response);
+    });
   };
 
   useEffect(function instantiate () {
@@ -81,7 +104,7 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
         ? <Text>We are ready to use camera</Text>
         : <Text>Needs camera permission</Text>
       }
-      <RNCamera
+      {/* <RNCamera
           // ref={ref => {
           //   camera.current = ref;
           // }}
@@ -115,23 +138,28 @@ const Main = (props: any): React.FunctionComponentElement<any> => {
               </View>
             );
           }}
-        </RNCamera>
+        </RNCamera> */}
+        <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
+          <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
+            <Text style={{ fontSize: 14 }}>Select image</Text>
+          </TouchableOpacity>
+        </View>
     </View>
   )
 }
 
-const PendingView = () => (
-  <View
-    style={{
-      flex: 1,
-      backgroundColor: 'lightgreen',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-  >
-    <Text>Waiting</Text>
-  </View>
-);
+// const PendingView = () => (
+//   <View
+//     style={{
+//       flex: 1,
+//       backgroundColor: 'lightgreen',
+//       justifyContent: 'center',
+//       alignItems: 'center',
+//     }}
+//   >
+//     <Text>Waiting</Text>
+//   </View>
+// );
 
 export default Main;
 
@@ -147,7 +175,9 @@ const styles = StyleSheet.create({
   capture: {
     flex: 0,
     backgroundColor: '#fff',
-    borderRadius: 50,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderRadius: 5,
     padding: 15,
     paddingHorizontal: 20,
     alignSelf: 'center',

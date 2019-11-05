@@ -25,6 +25,7 @@ export function imageToTensor (rawImageData: any): any {
 export async function classifyImage (model: any, image: any){
   try {
     const imageAssetPath = Image.resolveAssetSource(image);
+    console.log('________model', model);
     const response = await tfjsFetch(imageAssetPath.uri, {}, { isBinary: true });
     const rawImageData = await response.arrayBuffer();
     const imageTensor = imageToTensor(rawImageData);
