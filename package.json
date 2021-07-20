@@ -19,7 +19,7 @@
     "expo-gl-cpp": "^7.0.0",
     "jpeg-js": "^0.3.6",
     "react": "16.8.6",
-    "react-native": "0.61.2",
+    "react-native": "0.62.3",
     "react-native-camera": "^3.8.0",
     "react-native-image-picker": "^1.1.0",
     "react-native-unimodules": "^0.7.0-rc.1"
